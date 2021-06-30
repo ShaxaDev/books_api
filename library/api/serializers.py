@@ -20,11 +20,10 @@ class BookListSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 	token=serializers.SerializerMethodField()
+	# username=serializers.CharField(help_text="Togri yozing")
 	class Meta:
 		model=User
 		fields=('username','email','password','token')
-
-
 
 	def create(self, validated_data):
 		player = User.objects.create_user(**validated_data)

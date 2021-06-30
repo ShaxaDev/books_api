@@ -51,12 +51,16 @@ class BookCreateAPIView(generics.CreateAPIView):
 	queryset=Book.objects.all()
 	serializer_class=BookCreateSerializer
 
+	def get(self,request):
+		return Response({"message":'book yarating'})
+
 	def perform_create(self,serializer):
 		serializer.save(author=self.request.user)
 
 class RegisterAPIView(generics.CreateAPIView):
 	queryset=User.objects.all()
 	serializer_class=UserSerializer
+	permission_classes=[IsAuthenticatedOrReadOnly]
 
 	def get(self,request):
 		return Response({'msg':'register page'})
@@ -69,12 +73,12 @@ class RegisterAPIView(generics.CreateAPIView):
 			'token':Token.objects.get(user=u).key
 			 }
 		return Response(data)
-	def post(self,request):
-		d=UserSerializer(data=request.data)
-		manba={}
-		if d.is_valid():
-			u=d.save()
-			manba['username']=u.username
-			manba['token']=Token.objects.get(user=u).key
-			return Response(manba)
-		return Response(d.errors)
+	# def post(self,request):
+	# 	d=UserSerializer(data=request.data)
+	# 	manba={}
+	# 	if d.is_valid():
+	# 		u=d.save()
+	# 		manba['username']=u.username
+	# 		manba['token']=Token.objects.get(user=u).key
+	# 		return Response(manba)
+	# 	return Response(d.errors)
